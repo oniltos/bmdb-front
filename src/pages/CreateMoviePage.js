@@ -22,7 +22,13 @@ const CreateMoviesPage = props => {
             countries
         }
 
-        axios.post('http://localhost:3001/movies', newMovie)
+        const token = localStorage.getItem('token')
+
+        const headers = {
+            'Authorization': 'Bearer ' + token
+        }
+
+        axios.post('http://localhost:3001/movies', newMovie, {headers})
             .then(response => {
                 console.log(response.data)
                 alert('filme criado!')

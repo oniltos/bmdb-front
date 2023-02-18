@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
+import MovieCard from "../components/MovieCard"
 
 const MoviesPage = props => {
     const [movies, setMovies] = useState([])
 
+    const token = localStorage.getItem('token')
+
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    }
+
     useEffect(() => {
-        axios.get('http://localhost:3001/movies')
+        axios.get('http://localhost:3001/movies', {headers})
         .then(response => {
             setMovies(response.data)
         })
@@ -13,16 +20,13 @@ const MoviesPage = props => {
     }, [])
 
     return (
-        <div>
+        <div className="container">
             <h1>Movies</h1>
 
-            <div>
+            <div className="row">
                 { movies.length > 0 && movies.map(movie => {
                     return (
-                        <div>
-                            <img src={movie.poster} alt="poster" />
-                            {movie.title}
-                        </div>
+                        <MovieCard movie={movie} key={movie._id} />
                     )
                 })}
             </div>
